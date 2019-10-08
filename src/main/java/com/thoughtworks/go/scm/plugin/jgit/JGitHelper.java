@@ -1,5 +1,6 @@
 package com.thoughtworks.go.scm.plugin.jgit;
 
+import com.jcraft.jsch.Session;
 import com.thoughtworks.go.scm.plugin.model.GitConfig;
 import com.thoughtworks.go.scm.plugin.model.ModifiedFile;
 import com.thoughtworks.go.scm.plugin.model.Revision;
@@ -16,8 +17,7 @@ import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.submodule.SubmoduleStatus;
 import org.eclipse.jgit.submodule.SubmoduleWalk;
-import org.eclipse.jgit.transport.RefSpec;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.FS;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
@@ -28,8 +28,18 @@ import java.util.*;
 
 public class JGitHelper extends GitHelper {
 
+    private SshSessionFactory sshSessionFactory;
+
     private JGitHelper(GitConfig gitConfig, File workingDir) {
         super(gitConfig, workingDir);
+        if (gitConfig.isSsh()) {
+            sshSessionFactory = new JschConfigSessionFactory() {
+                @Override
+                protected void configure(OpenSshConfig.Host hc, Session session) {
+                   //nothing
+                }
+            };
+        }
     }
 
     public static JGitHelper create(GitConfig gitConfig, String destinationFolder) {
@@ -712,7 +722,12 @@ public class JGitHelper extends GitHelper {
     }
 
     private void setCredentials(TransportCommand command) {
-        if (gitConfig.isRemoteUrl() && gitConfig.hasCredentials()) {
+        if (gitConfig.isSsh()) {
+            command.setTransportConfigCallback(t -> {
+                SshTransport sshTransport = ( SshTransport )t;
+                sshTransport.setSshSessionFactory( sshSessionFactory );
+            });
+        } else if (gitConfig.isRemoteUrl() && gitConfig.hasCredentials()) {
             command.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitConfig.getUsername(), gitConfig.getPassword()));
         }
     }

@@ -39,7 +39,11 @@ public class GitConfig {
     }
 
     public boolean isRemoteUrl() {
-        return url.startsWith("http://") || url.startsWith("https://");
+        return url.startsWith("http://") || url.startsWith("https://") || isSsh();
+    }
+
+    public boolean isSsh() {
+        return url.startsWith("ssh://") || url.startsWith("git@");
     }
 
     public boolean hasCredentials() {
@@ -47,7 +51,7 @@ public class GitConfig {
     }
 
     public String getEffectiveUrl() {
-        if (isRemoteUrl() && hasCredentials()) {
+        if (isRemoteUrl() && hasCredentials() && !isSsh()) {
             return getUrlWithCredentials();
         }
         return getUrl();

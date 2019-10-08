@@ -54,13 +54,15 @@ public class GitConfigTest {
         GitConfig gitConfig = new GitConfig("https://url.test", "user", "password", "master");
 
         assertThat(gitConfig.isRemoteUrl(), is(equalTo(Boolean.TRUE)));
+        assertThat(gitConfig.isSsh(), is(equalTo(Boolean.FALSE)));
     }
 
     @Test
     public void isRemoteUrlShouldBeTrueForGitUrl() {
         GitConfig gitConfig = new GitConfig("git@github.com:test/sample.git", "user", "password", "master");
 
-        assertThat(gitConfig.isRemoteUrl(), is(equalTo(Boolean.FALSE)));
+        assertThat(gitConfig.isRemoteUrl(), is(equalTo(Boolean.TRUE)));
+        assertThat(gitConfig.isSsh(), is(equalTo(Boolean.TRUE)));
     }
 
     @Test

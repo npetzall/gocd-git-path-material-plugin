@@ -2,8 +2,8 @@
 <go-plugin id="GitPathMaterial" version="1">
     <about>
         <name>GitPathMaterial Plugin</name>
-        <version>1.2.3</version>
-        <target-go-version>15.1.0</target-go-version>
+        <version>1.3.0</version>
+        <target-go-version>19.9.0</target-go-version>
         <description>Plugin that polls a Git repository and triggers pipeline based on the sub-directory</description>
         <vendor>
             <name>ThoughtWorks</name>

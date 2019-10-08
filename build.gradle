@@ -10,7 +10,7 @@ targetCompatibility = 1.8
 project.ext.pluginDesc = [
         id         : 'com.thoughtworks.gocd',
         version    : project.version,
-        goCdVersion: '19.8.0',
+        goCdVersion: '19.9.0',
         name       : 'Git Path Material',
         description: 'Git Path Material plugin for GoCD',
         vendorName : 'GoCd Contributors',
@@ -40,6 +40,7 @@ dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
     compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.5.0.201609210915-r'
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.55'
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
